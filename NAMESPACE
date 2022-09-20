@@ -1,0 +1,3 @@
+useDynLib(GeomFPOP, .registration=TRUE)
+importFrom(Rcpp, evalCpp)
+exportPattern("^[[:alpha:]]+")
