@@ -290,7 +290,7 @@ public:
             srand(time(0));
             j = std::rand() % k; //{0,...,k-1}
           }
-          costDif->initialize( candidates[orderedchanges[j]]->cost_tau_t, candidates[t]->cost_tau_t);
+          costDif->initialize( candidates[orderedchanges[j]]->cost_tau_t, candidates[k]->cost_tau_t);
           costDif->getSphere(sphere);
            blocks[orderedchanges[k]]->ExclusionSphere(sphere);
           isPruning = blocks[orderedchanges[k]]->IsEmptyRect();

@@ -21,7 +21,7 @@ library(GeomFPOP)
 
 We use the following function for data generation:
 
-The function `rnormChanges`.
+> The function `rnormChanges`.
 
 The `rnormChanges` is the generation of data (`p`-variate Gaussian Model) of dimension `p` with a given values of means and changes.
 
@@ -84,7 +84,7 @@ We consider GeomFPOP with different number of intersections and exclusions at ea
 
 Empirical estimation of pruning and run-time efficiency of GeomFPOP demonstrates its fast work for long `2`-dimensional and `3`-dimensional signals.
 
-The function `getChangePoints`.
+> The function `getChangePoints`.
 
 The ` getChangePoints ` function returns the result of the segmentation.
 
