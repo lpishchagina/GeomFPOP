@@ -141,6 +141,7 @@ public:
   
   //ALGORITHM-----------------------------------------------------------------//
   List algosOP(unsigned int type_algo, bool showNbCands){
+    srand(time(0));
     //INITIALIZATION------------------------------------//
     candidate<p> ** candidates;
     pRectangle<p> ** blocks;
@@ -178,10 +179,8 @@ public:
       // add new data-point in cost functions 
       funCtt->initialize(Data[t]);
       for (std::list<unsigned int>::iterator iter = changes_t.begin(); iter != changes_t.end(); iter++) {
-      //  Rcpp::Rcout<<(*iter)<<";";
         (candidates[*iter]->cost_tau_t)->addCost(funCtt);
       }
-     // Rcpp::Rcout<<endl;
       // min
       q_bestTau_t = (candidates[changes_t.front()]->cost_tau_t)->getMin();
       LastChpt[t] = 0;//best solution of last change at time t
@@ -192,11 +191,11 @@ public:
           LastChpt[t] = candidates[*iter]->tau;
         }
       }
-    // store min
-    VectOfCosts[t+1] = q_bestTau_t + Penalty;//m_t+\beta
-    NbOfCandidats.push_back(changes_t.size());
-    (candidates[t+1]->cost_tau_t)->initialize(VectOfCosts[t+1]); //add m_t+\beta in cost at time t+1
-    
+      // store min
+      VectOfCosts[t+1] = q_bestTau_t + Penalty;//m_t+\beta
+      NbOfCandidats.push_back(changes_t.size());
+      (candidates[t+1]->cost_tau_t)->initialize(VectOfCosts[t+1]); //add m_t+\beta in cost at time t+1
+      
     //save pastSpheres for GeomFPOP(S-type) and GeomFPOP(R-type*) 
     if (type_algo >= 11 && type_algo <= 14) {
       for (std::list<unsigned int>::iterator iter = changes_t.begin(); iter != changes_t.end(); iter++) {
@@ -206,6 +205,7 @@ public:
         (pastSets[t+1]->pastSpheres).push_back(pSph);
       }
     }
+    
     //STEP 1: END//
     // STEP 2: PRUNING//
     //PELT
@@ -227,6 +227,7 @@ public:
   //PRUNING-------------------------------------------------------------------//
   //PELT----------------------------------------------------------------------//
   void oneIterPruningPELT(double boundary, unsigned int t, std::list<unsigned int> &changes_t, candidate<p> ** &candidates) {
+    
     std::list<unsigned int>::iterator iter = changes_t.begin();
     for (unsigned int i = 0; i < NbOfCandidats[t]; i++) {
       if ( (candidates[*iter]->cost_tau_t)->getMin() >= boundary) {
@@ -243,13 +244,16 @@ public:
     costDif->getSphere(sphere);
     blocks[orderedchanges[k]]->IntersectionSphere(sphere);
     isPruning = blocks[orderedchanges[k]]->IsEmptyRect();
+  //  Rcpp::Rcout<< "lastk_t"<<sphere->r<<" ";
+    
     //others intersections (+random or all)
     if(!isPruning && (nbInter > 0) && (k < (nbCds-1))) {
       unsigned int j = k;
       while (!isPruning && (j < (nbCds-1))) {//without last sphere
         if (nbInter == 1) {
-          srand(time(0));
+      //    srand(time(0));
           j = k + 1 + (std::rand() % (nbCds - k - 1)-1);//{k+1,..,t-1}
+          Rcpp::Rcout <<"jI ="<<j<< " ; ";
         }
         costDif->initialize(candidates[orderedchanges[k]]->cost_tau_t, candidates[orderedchanges[j+1]]->cost_tau_t);
         costDif->getSphere(sphere);
@@ -287,15 +291,16 @@ public:
         unsigned int j = 0;
         while (!isPruning && (j < k)) {
           if (nbExcl == 1) {
-            srand(time(0));
+           // srand(time(0));
             j = std::rand() % k; //{0,...,k-1}
           }
-          costDif->initialize( candidates[orderedchanges[j]]->cost_tau_t, candidates[k]->cost_tau_t);
+          costDif->initialize( candidates[orderedchanges[j]]->cost_tau_t, candidates[orderedchanges[k]]->cost_tau_t);
           costDif->getSphere(sphere);
            blocks[orderedchanges[k]]->ExclusionSphere(sphere);
           isPruning = blocks[orderedchanges[k]]->IsEmptyRect();
           if(nbExcl == 1) {j = k;} 
           else {j++;}
+         
         }
       }
       if (isPruning) {candidates[orderedchanges[k]]->isPruning = true;}
