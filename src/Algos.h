@@ -244,16 +244,13 @@ public:
     costDif->getSphere(sphere);
     blocks[orderedchanges[k]]->IntersectionSphere(sphere);
     isPruning = blocks[orderedchanges[k]]->IsEmptyRect();
-  //  Rcpp::Rcout<< "lastk_t"<<sphere->r<<" ";
     
     //others intersections (+random or all)
     if(!isPruning && (nbInter > 0) && (k < (nbCds-1))) {
       unsigned int j = k;
       while (!isPruning && (j < (nbCds-1))) {//without last sphere
         if (nbInter == 1) {
-      //    srand(time(0));
           j = k + 1 + (std::rand() % (nbCds - k - 1)-1);//{k+1,..,t-1}
-          Rcpp::Rcout <<"jI ="<<j<< " ; ";
         }
         costDif->initialize(candidates[orderedchanges[k]]->cost_tau_t, candidates[orderedchanges[j+1]]->cost_tau_t);
         costDif->getSphere(sphere);
