@@ -102,7 +102,7 @@ unsigned int typeAlgo(std::string method, std::string type, std::string intersec
 //' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'random', nbRandInter = 1, exclusion = 'empty', showNbCands = FALSE)
 
 // [[Rcpp::export]]
-List getChangePoints(Rcpp::NumericMatrix data, double penalty, std::string method = "GeomFPOP", std::string type = "R", std::string intersection = "all",  std::string exclusion = "all", bool showNbCands = false, int nbRandIner = 1, int nbRandExcl = 1) {
+List getChangePoints(Rcpp::NumericMatrix data, double penalty, std::string method = "GeomFPOP", std::string type = "R", std::string intersection = "all",  std::string exclusion = "all", bool showNbCands = false, int nbRandInter = 1, int nbRandExcl = 1) {
   unsigned int type_algo = typeAlgo(method, type, intersection, exclusion);
   //----------stop--------------------------------------------------------------
   if (penalty < 0) {throw std::range_error("Penalty should be a non-negative number!");}
@@ -112,61 +112,61 @@ List getChangePoints(Rcpp::NumericMatrix data, double penalty, std::string metho
   unsigned int p = (unsigned int)data.nrow();
   if (p == 2){
     Algos<2> X = Algos<2>(data, penalty);
-    return X.algosOP(type_algo, showNbCands,nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands,nbRandInter, nbRandExcl);
   } else if (p == 3){
     Algos<3> X = Algos<3>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 4){
     Algos<4> X = Algos<4>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 5){
     Algos<5> X = Algos<5>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 6){
     Algos<6> X = Algos<6>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 7){
     Algos<7> X = Algos<7>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 8){
     Algos<8> X = Algos<8>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 9){
     Algos<9> X = Algos<9>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 10){
     Algos<10> X = Algos<10>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 11){
     Algos<11> X = Algos<11>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 12){
     Algos<12> X = Algos<12>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 13){
     Algos<13> X = Algos<13>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 14){
     Algos<14> X = Algos<14>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 15){
     Algos<15> X = Algos<15>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 16){
     Algos<16> X = Algos<16>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 17){
     Algos<17> X = Algos<17>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 18){
     Algos<18> X = Algos<18>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 19){
     Algos<19> X = Algos<19>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   } else if (p == 20){
     Algos<20> X = Algos<20>(data, penalty);
-    return X.algosOP(type_algo, showNbCands, nbRandIner, nbRandExcl);
+    return X.algosOP(type_algo, showNbCands, nbRandInter, nbRandExcl);
   }
   return NULL;
 }

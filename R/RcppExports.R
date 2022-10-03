@@ -53,6 +53,6 @@
 NULL
 
 getChangePoints <- function(data, penalty, method = "GeomFPOP", type = "R", intersection = "all", exclusion = "all", showNbCands = FALSE, nbRandInter = 1L, nbRandExcl = 1L) {
-    .Call(`_GeomFPOP_getChangePoints`, data, penalty, method, type, intersection, exclusion, showNbCands, nbRandIner, nbRandExcl)
+    .Call(`_GeomFPOP_getChangePoints`, data, penalty, method, type, intersection, exclusion, showNbCands, nbRandInter, nbRandExcl)
 }
 

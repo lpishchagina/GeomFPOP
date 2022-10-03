@@ -11,8 +11,8 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // getChangePoints
-List getChangePoints(Rcpp::NumericMatrix data, double penalty, std::string method, std::string type, std::string intersection, std::string exclusion, bool showNbCands, int nbRandIner, int nbRandExcl);
-RcppExport SEXP _GeomFPOP_getChangePoints(SEXP dataSEXP, SEXP penaltySEXP, SEXP methodSEXP, SEXP typeSEXP, SEXP intersectionSEXP, SEXP exclusionSEXP, SEXP showNbCandsSEXP, SEXP nbRandInerSEXP, SEXP nbRandExclSEXP) {
+List getChangePoints(Rcpp::NumericMatrix data, double penalty, std::string method, std::string type, std::string intersection, std::string exclusion, bool showNbCands, int nbRandInter, int nbRandExcl);
+RcppExport SEXP _GeomFPOP_getChangePoints(SEXP dataSEXP, SEXP penaltySEXP, SEXP methodSEXP, SEXP typeSEXP, SEXP intersectionSEXP, SEXP exclusionSEXP, SEXP showNbCandsSEXP, SEXP nbRandInterSEXP, SEXP nbRandExclSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -23,9 +23,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::string >::type intersection(intersectionSEXP);
     Rcpp::traits::input_parameter< std::string >::type exclusion(exclusionSEXP);
     Rcpp::traits::input_parameter< bool >::type showNbCands(showNbCandsSEXP);
-    Rcpp::traits::input_parameter< int >::type nbRandIner(nbRandInerSEXP);
+    Rcpp::traits::input_parameter< int >::type nbRandInter(nbRandInterSEXP);
     Rcpp::traits::input_parameter< int >::type nbRandExcl(nbRandExclSEXP);
-    rcpp_result_gen = Rcpp::wrap(getChangePoints(data, penalty, method, type, intersection, exclusion, showNbCands, nbRandIner, nbRandExcl));
+    rcpp_result_gen = Rcpp::wrap(getChangePoints(data, penalty, method, type, intersection, exclusion, showNbCands, nbRandInter, nbRandExcl));
     return rcpp_result_gen;
 END_RCPP
 }

@@ -213,8 +213,8 @@ public:
     //GEOMFPOP
     if (type_algo >= 2 && type_algo <=14) {
       if (type_algo == 11) {oneIterPruningStypeGeomFPOP(t, changes_t, candidates, pastSets);} 
-      else if  ( type_algo < 11) {oneIterPruningGeomFPOP(nbInter, nbExcl,t, changes_t,candidates, blocks,nbRandIner,nbRandExcl);} 
-      else {oneIterPruningGeomFPOPallPast(nbInter, t, changes_t, candidates, blocks, pastSets,nbRandIner);}
+      else if  ( type_algo < 11) {oneIterPruningGeomFPOP(nbInter, nbExcl,t, changes_t,candidates, blocks,nbRandInter,nbRandExcl);} 
+      else {oneIterPruningGeomFPOPallPast(nbInter, t, changes_t, candidates, blocks, pastSets,nbRandInter);}
     }
       changes_t.push_back(t+1);//ADD NEW CHANGE
     //STEP 2: END//
@@ -238,7 +238,7 @@ public:
     }
   }
   //GEOMFPOP------------------------------------------------------------------//
-  void RintersectionGeomFPOP (unsigned int k, bool &isPruning, int nbInter, unsigned int nbCds, unsigned int t, unsigned int * &orderedchanges, candidate<p> ** &candidates, pRectangle<p> ** &blocks, pCost<p> *&costDif, pSphere<p> * &sphere, int nbRandIner) {
+  void RintersectionGeomFPOP (unsigned int k, bool &isPruning, int nbInter, unsigned int nbCds, unsigned int t, unsigned int * &orderedchanges, candidate<p> ** &candidates, pRectangle<p> ** &blocks, pCost<p> *&costDif, pSphere<p> * &sphere, int nbRandInter) {
     //last intersection
     costDif->initialize(candidates[orderedchanges[k]]->cost_tau_t, candidates[t+1]->cost_tau_t);
     costDif->getSphere(sphere);
@@ -247,12 +247,12 @@ public:
     
     //others intersections (+random or all)
     if(!isPruning && (nbInter > 0) && (k < (nbCds-1))) {
-      if (nbRandIner >= (nbCds - k - 1)) {
+      if (nbRandInter >= (nbCds - k - 1)) {
         nbInter = 10;
       }
       unsigned int j = k;
       unsigned int countRand = 0;
-      while (!isPruning && (j < (nbCds-1)) && (countRand != nbRandIner)) {//without last sphere
+      while (!isPruning && (j < (nbCds-1)) && (countRand != nbRandInter)) {//without last sphere
         if (nbInter == 1) {
           j = k + (std::rand() % (nbCds - k - 1));//{k,..,t-1}
         }
@@ -270,7 +270,7 @@ public:
   }
   
   //GEOMFPOP(R-type)----------------------------------------------------------//
-  void oneIterPruningGeomFPOP(int nbInter, int nbExcl, unsigned int t, std::list<unsigned int> &changes_t, candidate<p> ** &candidates, pRectangle<p> ** &blocks, int nbRandIner, int nbRandExcl) {
+  void oneIterPruningGeomFPOP(int nbInter, int nbExcl, unsigned int t, std::list<unsigned int> &changes_t, candidate<p> ** &candidates, pRectangle<p> ** &blocks, int nbRandInter, int nbRandExcl) {
     //INITIALIZATION
     unsigned int nbCds = NbOfCandidats[t];
     pCost<p> *costDif = new pCost<p>();
@@ -286,7 +286,7 @@ public:
     //Update candidates
     for (size_t k = 0; k < nbCds; k++) {
       isPruning = false;//candidate is not empty
-      RintersectionGeomFPOP (k, isPruning, nbInter, nbCds,  t,orderedchanges, candidates, blocks, costDif, sphere,nbRandIner);
+      RintersectionGeomFPOP (k, isPruning, nbInter, nbCds,  t,orderedchanges, candidates, blocks, costDif, sphere,nbRandInter);
       //exclusion(random or all)
       if(!isPruning && (nbExcl > 0) && (k != 0)) {
         unsigned int j = 0;
@@ -316,7 +316,7 @@ public:
   }
   
   //GEOMFPOP allPast spheres(R-type)----------------------------------------------------------//
-  void oneIterPruningGeomFPOPallPast(int nbInter,unsigned int t, std::list<unsigned int> &changes_t, candidate<p> ** &candidates, pRectangle<p> ** &blocks, pastset<p>** &pastSets, int nbRandIner) {
+  void oneIterPruningGeomFPOPallPast(int nbInter,unsigned int t, std::list<unsigned int> &changes_t, candidate<p> ** &candidates, pRectangle<p> ** &blocks, pastset<p>** &pastSets, int nbRandInter) {
     //INITIALIZATION
     unsigned int nbCds = NbOfCandidats[t];
     pCost<p> *costDif = new pCost<p>();
@@ -332,7 +332,7 @@ public:
     //Update candidates
     for (size_t k = 0; k < nbCds; k++) {
       isPruning = false;//candidate is not empty
-      RintersectionGeomFPOP (k, isPruning, nbInter, nbCds,  t,orderedchanges, candidates, blocks, costDif, sphere,nbRandIner);
+      RintersectionGeomFPOP (k, isPruning, nbInter, nbCds,  t,orderedchanges, candidates, blocks, costDif, sphere,nbRandInter);
       //exclusion(random or all)
       if (((pastSets[orderedchanges[k]]->pastSpheres).size() > 0) && !isPruning) {
         typename std::list<pSphere<p>*>::iterator iterP = (pastSets[orderedchanges[k]]->pastSpheres).begin();
