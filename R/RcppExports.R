@@ -11,6 +11,8 @@
 #' @param intersection is the type of intersection for GeomFPOP(method = 'R'):  'all', 'last' or 'random' (by default, 'last').
 #' @param exclusion is the type of exclusion for GeomFPOP(method = 'R'): 'empty', 'all', 'all*' or 'random'(by default, 'all').
 #' @param showNbCands is the logical parameter (if "true", than to show the number of candidates at each iteration).
+#' @param nbRandInter is the minimum number of intersections at each iteration for 'intersection = random' (by default, nbRandInter = 1)
+#' @param nbRandInter is the minimum number of exclusions at each iteration for 'exclusion = random'(by default, nbRandExcl = 1)
 #'
 #' @return a list of  elements  = (changes, means, UnpenalizedCost, NumberOfCandidates).
 #'
@@ -38,19 +40,19 @@
 #' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'S', showNbCands = FALSE)#GeomFPOP(S-type)
 #' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'last', exclusion = 'all', showNbCands = FALSE)
 #' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'last', exclusion = 'all*', showNbCands = FALSE)
-#' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'last', exclusion = 'random', showNbCands = FALSE)
+#' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'last', exclusion = 'random', nbRandExcl = 1, showNbCands = FALSE)
 #' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'last', exclusion = 'empty', showNbCands = FALSE)
 #' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'all', exclusion = 'all', showNbCands = FALSE)
 #' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'all', exclusion = 'all*', showNbCands = FALSE)
-#' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'all', exclusion = 'random', showNbCands = FALSE)
+#' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'all', exclusion = 'random', nbRandExcl = 1, showNbCands = FALSE)
 #' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'all', exclusion = 'empty', showNbCands = FALSE)
-#' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'random', exclusion = 'all', showNbCands = FALSE)
-#' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'random', exclusion = 'all*', showNbCands = FALSE)
-#' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'random', exclusion = 'random', showNbCands = FALSE)
-#' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'random', exclusion = 'empty', showNbCands = FALSE)
+#' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'random',nbRandInter = 1, exclusion = 'all', showNbCands = FALSE)
+#' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'random',nbRandInter = 1, exclusion = 'all*', showNbCands = FALSE)
+#' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'random', nbRandInter = 1, exclusion = 'random', nbRandExcl = 1, showNbCands = FALSE)
+#' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'random', nbRandInter = 1, exclusion = 'empty', showNbCands = FALSE)
 NULL
 
-getChangePoints <- function(data, penalty, method = "GeomFPOP", type = "R", intersection = "all", exclusion = "all", showNbCands = FALSE) {
-    .Call(`_GeomFPOP_getChangePoints`, data, penalty, method, type, intersection, exclusion, showNbCands)
+getChangePoints <- function(data, penalty, method = "GeomFPOP", type = "R", intersection = "all", exclusion = "all", showNbCands = FALSE, nbRandIner = 1L, nbRandExcl = 1L) {
+    .Call(`_GeomFPOP_getChangePoints`, data, penalty, method, type, intersection, exclusion, showNbCands, nbRandIner, nbRandExcl)
 }
 
