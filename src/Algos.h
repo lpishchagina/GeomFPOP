@@ -140,7 +140,7 @@ public:
   }
   
   //ALGORITHM-----------------------------------------------------------------//
-  List algosOP(unsigned int type_algo, bool showNbCands, int nbRandIner, int nbRandExcl){
+  List algosOP(unsigned int type_algo, bool showNbCands, int nbRandInter, int nbRandExcl){
     srand(time(0));
     //INITIALIZATION------------------------------------//
     candidate<p> ** candidates;

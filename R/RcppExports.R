@@ -52,7 +52,7 @@
 #' getChangePoints(data = time_series, penalty = Penalty, method = 'GeomFPOP', type = 'R', intersection = 'random', nbRandInter = 1, exclusion = 'empty', showNbCands = FALSE)
 NULL
 
-getChangePoints <- function(data, penalty, method = "GeomFPOP", type = "R", intersection = "all", exclusion = "all", showNbCands = FALSE, nbRandIner = 1L, nbRandExcl = 1L) {
+getChangePoints <- function(data, penalty, method = "GeomFPOP", type = "R", intersection = "all", exclusion = "all", showNbCands = FALSE, nbRandInter = 1L, nbRandExcl = 1L) {
     .Call(`_GeomFPOP_getChangePoints`, data, penalty, method, type, intersection, exclusion, showNbCands, nbRandIner, nbRandExcl)
 }
 
