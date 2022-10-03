@@ -102,7 +102,7 @@ The ` getChangePoints ` function returns the result of the segmentation.
 
 ` exclusion ` is the type of exclusion : `'empty'`, `'all'` , `'all*'` or `'random' `.
 
-` nbRandexcl` is the minimum number of exclusions at each iteration (only for `exclusion = 'random'`)
+` nbRandExcl` is the minimum number of exclusions at each iteration (only for `exclusion = 'random'`)
 
 ` showNbCands `is the logical parameter (` showNbCands = TRUE ` - to print the number of change-point candidates for each iteration).
 
