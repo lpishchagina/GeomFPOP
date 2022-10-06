@@ -76,7 +76,7 @@ unsigned int typeAlgo(std::string method, std::string type, std::string intersec
 //' @examples
 //' N <- 100000
 //' Chpt <-5000
-//' Means <-  matrix(c(0,1,1,10), nrow = 2)
+//' Means <-  matrix(c(0,1,1,10), nrow = 2) 
 //' Noise <- 1
 //' Dim <- 2
 //' Penalty <- 2*Dim*log(N)
@@ -107,9 +107,13 @@ List getChangePoints(Rcpp::NumericMatrix data, double penalty, std::string metho
   //----------stop--------------------------------------------------------------
   if (penalty < 0) {throw std::range_error("Penalty should be a non-negative number!");}
   if(type_algo == INFINITY){throw std::range_error("This combination of parameters is not available.");}
-  if((unsigned int)data.nrow() < 2 || (unsigned int)data.nrow() > 20) {throw std::range_error("The dimension of time series can not exceed 20.");}
+  if((unsigned int)data.nrow() < 1 || (unsigned int)data.nrow() > 20) {throw std::range_error("The dimension of time series can not exceed 20.");}
   //----------------------------------------------------------------------------
   unsigned int p = (unsigned int)data.nrow();
+  if (p == 1){
+    Algos<1> X = Algos<1>(data, penalty);
+    return X.algosOP(type_algo, showNbCands,nbRandInter, nbRandExcl);
+  } else 
   if (p == 2){
     Algos<2> X = Algos<2>(data, penalty);
     return X.algosOP(type_algo, showNbCands,nbRandInter, nbRandExcl);

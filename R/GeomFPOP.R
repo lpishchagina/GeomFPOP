@@ -36,10 +36,7 @@ rnormChanges <- function(p, n, changes = NULL, means = matrix(0, ncol = 1, nrow 
     stop('means are not all numeric!')
   }
   if ((length(changes) + 1) !=  length(means[1,])) {
-    stop('The length of the means[1,] is always equal to the number of changes plus one!')
-  }
-  if ((length(changes) + 1) !=  length(means[2,])) {
-    stop('The length of the means[2,] is always equal to the number of changepoints plus one!')
+    stop('The length of the means[,] is always equal to the number of changes plus one!')
   }
   if (!is.double(noise)) {
     stop('noise is not a double!')

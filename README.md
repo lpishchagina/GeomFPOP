@@ -5,7 +5,7 @@
 
 ## Quick Start
 
-` GeomFPOP ` is an R package written in Rcpp/C++ and developed to detect changes in using the methods: Optimal Partitioning (OP), Pruned Exact Linear Time (PELT) and Geometric Functional Pruning Optimal Partitioning (GeomFPOP) in `p`-variate time series (`p`-variate Gaussian Model) of length `n`, where  `p` in `{2,.., 20}`. 
+` GeomFPOP ` is an R package written in Rcpp/C++ and developed to detect changes in using the methods: Optimal Partitioning (OP), Pruned Exact Linear Time (PELT) and Geometric Functional Pruning Optimal Partitioning (GeomFPOP) in `p`-variate time series (`p`-variate Gaussian Model) of length `n`, where  `p` in `{1,.., 20}`. 
 
 
 ## The package installation
