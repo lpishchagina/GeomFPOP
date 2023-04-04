@@ -107,7 +107,7 @@ List getChangePoints(Rcpp::NumericMatrix data, double penalty, std::string metho
   //----------stop--------------------------------------------------------------
   if (penalty < 0) {throw std::range_error("Penalty should be a non-negative number!");}
   if(type_algo == INFINITY){throw std::range_error("This combination of parameters is not available.");}
-  if((unsigned int)data.nrow() < 1 || (((unsigned int)data.nrow() > 20) && ((unsigned int)data.nrow() != 100)) {throw std::range_error("The dimension of time series can not exceed 20.");}
+  if( ((unsigned int)data.nrow() < 1) ||  (((unsigned int)data.nrow() > 20) && ((unsigned int)data.nrow() != 100))) {throw std::range_error("The dimension of time series can not exceed 20.");}
   //----------------------------------------------------------------------------
   unsigned int p = (unsigned int)data.nrow();
   if (p == 1){
