@@ -26,7 +26,7 @@
 #' @examples
 #' N <- 100000
 #' Chpt <-5000
-#' Means <-  matrix(c(0,1,1,10), nrow = 2)
+#' Means <-  matrix(c(0,1,1,10), nrow = 2) 
 #' Noise <- 1
 #' Dim <- 2
 #' Penalty <- 2*Dim*log(N)
