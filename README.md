@@ -5,7 +5,7 @@
 
 ## Quick Start
 
-` GeomFPOP ` is an R package written in Rcpp/C++ and developed to detect changes in using the methods: Optimal Partitioning (OP), Pruned Exact Linear Time (PELT) and Geometric Functional Pruning Optimal Partitioning (GeomFPOP) in `p`-variate time series (`p`-variate Gaussian Model) of length `n`, where  `p` in `{1,.., 20}`. 
+` GeomFPOP ` is an R package written in Rcpp/C++ and developed to detect changes in using the methods: Optimal Partitioning (OP), Pruned Exact Linear Time (PELT) and Geometric Functional Pruning Optimal Partitioning (GeomFPOP) in `p`-variate time series (`p`-variate Gaussian Model) of length `n`, where  `p` in `{1,.., 20, 100}`. 
 
 
 ## The package installation
@@ -72,13 +72,11 @@ We consider GeomFPOP with different number of intersections and exclusions at ea
 
 `intersection = last` - we use for intersection  only last set.
 
-`intersection = random` - we use for intersection   last set and `nbRandInter` random sets from the possible sets.
+`intersection = random` - we use for intersection   last set and `nbRandInter` random sets from the possible sets (by default, `nbRandInter = 1`).
 
 `exclusion = empty` - we do not make exclusions.
 
-`exclusion = random` - we make exclusion with `nbRandExcl` random sets from the possible sets.
-
-`intersection = all` - we use for exclusions  all possible sets (their changes exist at time 't') .
+`exclusion = random` - we make exclusion with `nbRandExcl` random sets from the possible sets  (by default, `nbRandExcl = 1`)..
 
 `intersection = all*` - we use for exclusions  all possible sets.
 
@@ -94,17 +92,17 @@ The ` getChangePoints ` function returns the result of the segmentation.
 
 ` method ` is the type of algorithm : `'OP'`, `'PELT'`, `'GeomFPOP'`  (by default, `'GeomFPOP'`).
 
-` type ` is the getChangesimation type for GeomFPOP : `'R'`, `'S'` (by default, `'R'`).
+` type ` is the approximation type for GeomFPOP : `'R'`, `'S'` (by default, `'R'`).
 
 ` intersection ` is the type of intersection : `'all'`, `'last'` or  `'random'`.
 
 ` nbRandInter` is the minimum number of intersections at each iteration (only for `intersection = 'random'`)
 
-` exclusion ` is the type of exclusion : `'empty'`, `'all'` , `'all*'` or `'random' `.
+` exclusion ` is the type of exclusion : `'empty'`, `'all*'` or `'random' `.
 
 ` nbRandExcl` is the minimum number of exclusions at each iteration (only for `exclusion = 'random'`)
 
-` showNbCands `is the logical parameter (` showNbCands = TRUE ` - to print the number of change-point candidates for each iteration).
+` showNbCands ` is the logical parameter (` showNbCands = TRUE ` - to print the number of change-point candidates for each iteration).
 
 ```r
 
@@ -117,32 +115,25 @@ getChanges[[2]] <- getChangePoints(data = tsNoChange, penalty = Penality, method
 
 getChanges[[3]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'S', showNbCands = FALSE)
 
-getChanges[[4]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'all', exclusion = 'all', showNbCands = FALSE)
+getChanges[[4]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'all', exclusion = 'all*', showNbCands = FALSE)
 
-getChanges[[5]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'last', exclusion = 'all', showNbCands = FALSE)
+getChanges[5] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'last', exclusion = 'all*', showNbCands = FALSE)
 
-getChanges[[6]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'random', nbRandInter = 1, exclusion = 'all', showNbCands = FALSE)
-
-
-getChanges[[7]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'all', exclusion = 'all*', showNbCands = FALSE)
-
-getChanges[8] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'last', exclusion = 'all*', showNbCands = FALSE)
-
-getChanges[[9]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'random',nbRandInter = 1, exclusion = 'all*', showNbCands = FALSE)
+getChanges[[6]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'random',nbRandInter = 1, exclusion = 'all*', showNbCands = FALSE)
 
 
-getChanges[[10]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'all', exclusion = 'random',nbRandExcl = 1, showNbCands = FALSE)
+getChanges[[7]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'all', exclusion = 'random',nbRandExcl = 1, showNbCands = FALSE)
 
-getChanges[11] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'last', exclusion = 'random',nbRandExcl = 1, showNbCands = FALSE)
+getChanges[8] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'last', exclusion = 'random',nbRandExcl = 1, showNbCands = FALSE)
 
-getChanges[[12]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'random',nbRandInter = 1, exclusion = 'random', nbRandExcl = 1, showNbCands = FALSE)
+getChanges[[9]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'random',nbRandInter = 1, exclusion = 'random', nbRandExcl = 1, showNbCands = FALSE)
 
 
-getChanges[[13]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'all', exclusion = 'empty', showNbCands = FALSE)
+getChanges[[10]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'all', exclusion = 'empty', showNbCands = FALSE)
 
-getChanges[14] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'last', exclusion = 'empty', showNbCands = FALSE)
+getChanges[11] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'last', exclusion = 'empty', showNbCands = FALSE)
 
-getChanges[[15]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'random', nbRandInter = 1, exclusion = 'empty', showNbCands = FALSE)
+getChanges[[12]] <- getChangePoints(data = tsNoChange, penalty = Penality, method = 'GeomFPOP',  type = 'R',  intersection = 'random', nbRandInter = 1, exclusion = 'empty', showNbCands = FALSE)
 
 ```
 
