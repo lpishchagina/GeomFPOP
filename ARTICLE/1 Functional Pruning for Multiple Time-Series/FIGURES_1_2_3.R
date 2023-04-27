@@ -215,79 +215,66 @@ dev.off()
 
 #functions-----------------------------------------------------------------|
 #S-type set in 2D for Gaussian distribution is the ball (see Remark 2)
-getDisk <- function(i, j, y, Cost_t){ 
-  center <- rowMeans(y[, (i+1):j, drop=F])
-  radius2 <- (Cost_t[j] - Cost_t[i] - sum(y[, (i+1):j]^2) + (j-i) * sum(center^2)) / (j-i)
-  c(radius2, center)
+getDisk <- function(i, j, x, Cost_t) { ## j > i
+  center <- rowMeans(x[, (i+1):j, drop = F])
+  radius2 <- (Cost_t[j] - Cost_t[i] - sum(x[, (i+1):j]^2) + (j-i) * sum(center^2)) / (j-i)
+  return (list(radius2 = radius2, center = center))
 }
+#data generation 
 set.seed(21)
-
-#data generation-----------------------------------------------------------|
-#(ts ~ N_2(0, I), dimension p = 2, number of points n = 1à, without changes)
-ts <- rnormChanges(p = 2, n = 10, changes = NULL, means = matrix(0, ncol = 1, nrow = 2), 1)
-
-# Cost of one data point---------------------------------------------------|
-Cost_t <- rowSums(apply(ts, 1, function(ts){
-  cumsum(ts^2) - cumsum(ts)^2/(1:length(ts))
+#p=2, n=10 N(0,I)
+ts <- rnormChanges(2, 10, changes = NULL, means = matrix(0, ncol = 1, nrow = 2), 1)
+## Cost of one data point
+Cost_t <- rowSums(apply(ts, 1, function(y){
+  cumsum(y^2) - cumsum(y)^2/(1:length(y))
 }))
 
-#generation of 3 past and 3 future disks-----------------------------------| 
+#generation of 3 past and 2 future disks 
 pastDisks <- list()
 futureDisks <- list()
-#i,u parameters 
-i <- 4
-t <- 6
-pastStep <- c(1:(i-1))
-futureStep <- c(i:t)
-for(u in 1:3) {
-  pastDisks[[u]] <- getDisk(pastStep[u], i, ts, Cost_t);
-  futureDisks[[u]]   <- getDisk(i,pastStep[u], ts, Cost_t);
-}
-#table, future= darkblue , past=darkgreen
-circles <- data.frame(
-  r = c(sqrt(futureDisks[[1]][1]),
-        sqrt(futureDisks[[2]][1]),
-        sqrt(futureDisks[[3]][1]),
-        sqrt(pastDisks[[1]][1]),
-        sqrt(pastDisks[[2]][1]),
-        sqrt(pastDisks[[3]][1])),
-  y1 = c(futureDisks[[1]][2],
-         futureDisks[[2]][2],
-         futureDisks[[3]][2],
-         pastDisks[[1]][2],
-         pastDisks[[2]][2],
-         pastDisks[[3]][2]),
-  y2 = c(futureDisks[[1]][3],
-         futureDisks[[2]][3],
-         futureDisks[[3]][3],
-         pastDisks[[1]][3],
-         pastDisks[[2]][3],
-         pastDisks[[3]][3]),  
-  alpha = rep(0.01,6),
-  colour  = c(rep("darkblue",3),
-              rep("darkgreen",3))
-)
-#plot-----------------------------------------------------------------------|
-#boundaries
-xlim = c(min(circles[, 2] - circles[, 1]),
-         max(circles[, 2] + circles[, 1]))
-ylim = c(min(circles[, 3] - circles[, 1]),
-         max(circles[, 3] + circles[, 1]))
 
-Plot <- ggplot(circles) + geom_circle(aes(x0 = y1, 
-                                          y0 = y2, 
-                                          r = r, 
-                                          fill = colour, alpha=alpha, color = colour), 
-                                      show.legend = FALSE) + 
+past <- 4
+tau <- past + 1
+
+stepPS <- c(0, 1, 2)
+stepFS <- c(1:3)
+
+for(i in 1:length(stepPS)) pastDisks[[i]] <- getDisk(past - stepPS[i], tau, ts, Cost_t);
+for(i in 1:length(stepFS)) futureDisks[[i]]   <- getDisk(tau, tau+stepFS[i]+1, ts, Cost_t);
+#table
+#future= darkblue , past=darkgreen
+r2 <- as.double(unlist(c(futureDisks[[1]][1], futureDisks[[2]][1], futureDisks[[3]][1],
+                         pastDisks[[1]][1],pastDisks[[2]][1], pastDisks[[3]][1])))
+r <- sqrt(r2)
+y <- as.double(unlist(c(futureDisks[[1]][2], futureDisks[[2]][2],futureDisks[[3]][2],
+                        pastDisks[[1]][2],pastDisks[[2]][2], pastDisks[[3]][2])))
+i = c(1, 3, 5, 7, 9, 11)
+
+circles <- data.frame(
+  r = r,
+  y1 = y[i],
+  y2 = y[i+1],
+  alpha = rep(0.01,6),
+  colour  = c(rep("darkblue",3),rep("darkgreen",3))
+)
+#plot
+#boundaries
+xlim = c(min(circles[,2]-circles[,1]),max(circles[,2]+circles[,1]))
+ylim = c(min(circles[,3]-circles[,1]),max(circles[,3]+circles[,1]))
+
+#plot
+Plot<-ggplot(circles) +
+  geom_circle(aes(x0=y1, y0=y2, r=r, fill=colour, alpha=alpha, color=colour), show.legend=FALSE) + 
   scale_colour_identity() + 
   scale_fill_identity() +
   xlab("y\U00B9") +
   ylab("y\U00B2") +
   xlim(xlim) +
   ylim(ylim) +
-  theme_bw() +
+  theme_bw()+
   theme(text = element_text(size = 15))
 
+print(Plot)
 #pdf(file = "Figure3.pdf",  width = 4, height = 4)
 print(Plot)
 #dev.off
