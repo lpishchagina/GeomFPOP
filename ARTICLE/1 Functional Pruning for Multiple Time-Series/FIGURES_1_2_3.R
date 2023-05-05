@@ -159,7 +159,7 @@ x_neg_bin <- y_neg_bin <- seq(0.001,0.99999, by = .025)
 fun_neg_bin <- function(x,y) { z <- -NC - 
                                   NB * log(1 - x) - 
                                   NB * log(1 - y) - 
-                                  NA1 * log(x) + 
+                                  NA1 * log(x) - 
                                   NA2 * log(y) }
 z_neg_bin <- outer(x_neg_bin, y_neg_bin, fun_neg_bin)
 r_neg_bin <- 1:nrow(z_neg_bin)
