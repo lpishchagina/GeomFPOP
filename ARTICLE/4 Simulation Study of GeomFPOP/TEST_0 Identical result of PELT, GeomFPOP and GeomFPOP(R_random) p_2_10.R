@@ -9,21 +9,22 @@
 
 # Remark------------------------------------------------------------------|
 # We consider ts with n =10^4 data points                                 |     
-# number of segments = c(100, 50, 10, 5)                                  |
+# number of segments = c(100, 50, 10, 5, 1)                               |
 # The mean for even segments was equal to 1, for odd segments - 0.        |
 # The test was performed using parallel computing on the server           |
 # The number of cores: mc.cores = nbSimus_, where                         |  
-# nbSimus_ = 7#100 is the number of simulations.                          |   
+# nbSimus_ = 100 is the number of simulations.                            |   
 # The test results are saved in files of the following type:              | 
-# 'ResIsIdentical_Ints_p_1_it_100_.txt',                                  |
-# with p = 2, 3, 5, 7, 10                                                 |
+# 'ResIsIdentical_N_Ints_p_1_it_100_.txt',                                |
+# with p = 2,.., 10                                                       |
 #-------------------------------------------------------------------------|
 
 #packages----------------------------------------------------------------|
+#install.packages("devtools")
 #library(devtools)
 #devtools::install_github("lpishchagina/GeomFPOP", force = TRUE)
 library(GeomFPOP)
-library(iterators)
+#library(iterators)
 library(stats)
 library(parallel)
 
@@ -48,21 +49,21 @@ res_One_simulation <- function(nb_ints,
     means_[,2*i] <- 1 
   }  
   ts_ <- rnormChanges(p_, n_, changes_, means_, noise)
-  resPELT <- getChangePoints(ts_, pen_, 'PELT', 'R', 'all', 'all*')$changes
-  resGeomFPOP <- getChangePoints(ts_, pen_, 'GeomFPOP', 'R', 'all', 'all*')$changes
-  resGeomFPOP_RR <- getChangePoints(ts_, pen_, 'GeomFPOP', 'R', 'random', 'random')$changes
+  resPELT <- getChangePoints(ts_, pen_, 'PELT', 'R', 'all', 'all*')$UnpenalizedCost
+  resGeomFPOP <- getChangePoints(ts_, pen_, 'GeomFPOP', 'R', 'all', 'all*')$UnpenalizedCost
+  resGeomFPOP_RR <- getChangePoints(ts_, pen_, 'GeomFPOP', 'R', 'random', 'random')$UnpenalizedCost
   res <- (resPELT == resGeomFPOP)&&(resGeomFPOP == resGeomFPOP_RR)
   return (res);
 }
 #parameters--------------------------------------------------------------|
 n <- 10^4
-p <- c(2, 3, 5, 7, 10)
+p <- c(2, 3, 4, 5, 6, 7, 8, 9, 10)
 #segment number
-nb_ints <- c(100, 50, 10, 5)
+nb_ints <- c(100, 50, 10, 5, 1)
 #penalty
 pentype_ <- 1 # 0 # if '0' then 'penalty = 2log(n)'; if '1' then 'penalty = 2dim*log(n)'
 #simulation number
-nbSimus_ <- 7#100
+nbSimus_ <- 100
 
 #calculations------------------------------------------------------------|
 for (t_dim in 1:length(p)) {
@@ -84,15 +85,18 @@ for (t_dim in 1:length(p)) {
     index <- index + 1
   }
   #save result--------------------------------------------------------------------
-  file <- paste('ResIsIdentical_N',n, 
+  res_id <- (rowSums(test_results, na.rm = TRUE) == rep(nbSimus_, length(nb_ints)))
+  file <- paste('ResIsIdentical_',n, 
                 p[t_dim], 
                 pentype_, 
                 'it', 
                 nbSimus_,
                 '.txt', 
                 sep = '_')
-  write.table(data.frame (ints = nb_ints, identify = (rowSums(test_results, na.rm = TRUE) == rep(nbSimus_, length(nb_ints)))), file, row.names = TRUE, col.names = FALSE)
+  write.table(data.frame (ints = nb_ints, identify = res_id ), file, row.names = TRUE, col.names = FALSE)
 }
 ################################################################################
 ########################### END ################################################
 ################################################################################
+p
+
