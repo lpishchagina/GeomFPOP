@@ -68,7 +68,7 @@ public:
     for (size_t i = 0; i < N + 1; i++) {VectOfCosts[i] = cand.VectOfCosts[i];}
     for (size_t i = 0; i < N; i++) {
       LastChpt[i] = cand.LastChpt[i];
-      for (size_t k = 0; k < p; i++) {Data[i][k] = cand.Data[i][k];}
+      for (size_t k = 0; k < p; k++) {Data[i][k] = cand.Data[i][k];}
     }
     Changes = cand.Changes;
     SegmentMeans = cand.SegmentMeans;
