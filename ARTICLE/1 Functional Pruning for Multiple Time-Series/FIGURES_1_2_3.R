@@ -74,93 +74,59 @@ j <- 10
 set.seed(21)
 ts1_gauss <- rnorm(j)
 ts2_gauss <- rnorm(j)
-#mean parameter
-mean1_gauss <- mean(ts1_gauss)
-mean2_gauss <- mean(ts2_gauss)
-# mean1_gauss
-# [1] 0.1976666
-# mean2_gauss 
-# [1] 0.07501655
+#function definition------------------------------------------------------|
+#(a) x ∼ N (0, 1), y ∼ N (0, 1)
+x_gauss <- y_gauss <- seq(-2, 2, by = .025)
+
+A_gauss <- (j-i+1)
+B1_gauss <- 2* sum(ts1_gauss)
+B2_gauss <- 2* sum(ts2_gauss)
+C_gauss <- 2* sum(ts1_gauss^2) + 2* sum(ts2_gauss^2)
+
+fun_gauss <- function(x,y) { z <- A*(x^2 + y^2) - B1_gauss * x- B2_gauss * y + C_gauss
+}
+z_gauss <- outer(x_gauss, y_gauss, fun_gauss)
+r_gauss <- 1:nrow(z_gauss)
+p_gauss <- 1:ncol(z_gauss)
+#-----------------------------------------------------|
+
 #-----------------------------------------------------| 
 #(b) x ∼ P(1), y ∼ P(3),   
 #data generation
 set.seed(21)
 ts1_poisson <- rpois(j, 1)
 ts2_poisson <- rpois(j, 2)
-#mean parameter
-mean1_poisson <- mean(ts1_poisson)
-mean2_poisson <- mean(ts2_poisson)
-const <- 0
-#cost parameters
-A <- j - i + 1
-B1 <- sum(ts1_poisson)
-B2 <- sum(ts2_poisson)
-C <- 0
-for (u in i : j) { 
-  C <- C + 
-       log(factorial(ts1_poisson[u])) +
-       log(factorial(ts2_poisson[u]))
-}
-# A
-# [1] 10
-# B1
-# [1] 1.4
-# B2
-# [1] 1.6
-# C
-# [1] 13.69304
+#function definition------------------------------------------------------|
+#  (b) x ∼ P(1), y ∼ P(3),
+A <- 2*(j - i + 1)
+B1 <- 2*sum(ts1_poisson)
+B2 <- 2*sum(ts2_poisson)
+C <- 2*sum(log(factorial(ts1_poisson))) + sum(log(factorial(ts2_poisson)))
+x_poisson <- y_poisson <- seq(0.001,10, by = .025)
+fun_poisson <- function(x,y) { z <- A*(x + y) - B1*log(x) - B2*log(y) + C }
+z_poisson <- outer(x_poisson,y_poisson,fun_poisson)
+r_poisson <- 1:nrow(z_poisson)
+p_poisson <- 1:ncol(z_poisson)
+#-----------------------------------------------------|
+
+
 #-----------------------------------------------------|
 # (c) x ∼ NB(0.5,1), y ∼ NB(0.8,1). 
 # data generation
 set.seed(21)
 ts1_neg_bin <- rnbinom(j, prob = 0.5, size = 1)
 ts2_neg_bin <- rnbinom(j, prob = 0.8, size = 1)
-#cost parameters
-NA1 <- sum(ts1_neg_bin)
-NA2 <- sum(ts2_neg_bin)
-NB <- j - i + 1
-NC <- 0
-for (u in i : j) {
-  NC <- NC + 
-        log(factorial(ts1_neg_bin[u] + 9)/(factorial(ts1_neg_bin[u])*factorial(9))) + 
-        log(factorial(ts2_neg_bin[u]+9)/(factorial(ts2_neg_bin[u])*factorial(9))) 
-}
-# NA1 
-# [1] 11
-# NA2
-# [1] 3
-# NB
-# [1] 10
-# NC
-#[1] 28.92855
-
 #function definition------------------------------------------------------|
 #(a) x ∼ N (0, 1), y ∼ N (0, 1)
-x_gauss <- y_gauss <- seq(-2, 2, by = .025)
-fun_gauss <- function(x,y) { z <- (x - mean1_gauss)^2 +
-                                (y - mean2_gauss)^2 }
-z_gauss <- outer(x_gauss, y_gauss, fun_gauss)
-r_gauss <- 1:nrow(z_gauss)
-p_gauss <- 1:ncol(z_gauss)
-#-----------------------------------------------------|
-#  (b) x ∼ P(1), y ∼ P(3),
-x_poisson <- y_poisson <- seq(0.001,10, by = .025)
-fun_poisson <- function(x,y) { z <- A*x + 
-                                A*y -  
-                                B1*log(x) - 
-                                B2*log(y) - 
-                                C }
-z_poisson <- outer(x_poisson,y_poisson,fun_poisson)
-r_poisson <- 1:nrow(z_poisson)
-p_poisson <- 1:ncol(z_poisson)
+phi <- 1
+A_nb <- -2*phi*(j-i+1)
+B1_nb <- -2*sum(ts1_neg_bin)
+B2_nb <- -2*sum(ts2_neg_bin)
+C_nb <-  0 #phi=1
 #-----------------------------------------------------|
 # (c) x ∼ NB(0.5,1), y ∼ NB(0.8,1). 
 x_neg_bin <- y_neg_bin <- seq(0.001,0.99999, by = .025)
-fun_neg_bin <- function(x,y) { z <- -NC - 
-                                  NB * log(1 - x) - 
-                                  NB * log(1 - y) - 
-                                  NA1 * log(x) - 
-                                  NA2 * log(y) }
+fun_neg_bin <- function(x,y) { z <- A_nb *(log(1-x)+ log(1-y)) + B1_nb*log(x) + B2_nb*log(y) + C_nb }
 z_neg_bin <- outer(x_neg_bin, y_neg_bin, fun_neg_bin)
 r_neg_bin <- 1:nrow(z_neg_bin)
 p_neg_bin <- 1:ncol(z_neg_bin)
@@ -282,6 +248,5 @@ print(Plot)
 ################################################################################
 ########################### END ################################################
 ################################################################################
-
 
 
